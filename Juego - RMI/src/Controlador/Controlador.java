@@ -81,76 +81,76 @@ public class Controlador implements IControladorRemoto{
 		return jugadoresI;
 	}
 	
-	public void verCartasQueLeQuedaron() {
+	public void verCartasQueLeQuedaron() throws RemoteException {
 		ArrayList<Jugador> jugadores=this.modelo.listarJugadores();
 		Ijugador jugadorActual=jugadores.get(this.modelo.getJugadorActual());
 		this.vista.mostrarCartasDespuesDeJugar(jugadorActual);
 		
 	}
 	
-	public void verCartasEnMesa() {
+	public void verCartasEnMesa() throws RemoteException {
 		this.vista.mostrarCartasEnMesa(this.modelo.getCartasEnMesa());	
 	}
 
-	public void verCartasJugadorActual() {
+	public void verCartasJugadorActual() throws RemoteException {
 		ArrayList<Jugador> jugadores=this.modelo.listarJugadores();
 		Ijugador jugadorActual=jugadores.get(this.modelo.getJugadorActual());
 		this.vista.mostrarCartaJugadorActual(jugadorActual);
 	}
 	
-	public void verJugadores(){
+	public void verJugadores() throws RemoteException{
 		ArrayList<Jugador> jugadores=this.modelo.listarJugadores();
 		this.vista.mostrarJugadores(this.castJugador(jugadores));
 	}
 	
-	public void agregarJugador(String id) {
+	public void agregarJugador(String id) throws RemoteException {
 		this.modelo.agregarJugador(id);
 	}
-	public void iniciarJuego() {
+	public void iniciarJuego() throws RemoteException {
 		this.modelo.repartirCartas();
 	}
 
-	public void jugarSimple(String posCartaJugada, String posCartaEnMesa) {
+	public void jugarSimple(String posCartaJugada, String posCartaEnMesa) throws NumberFormatException, RemoteException {
 		this.modelo.jugarActual(Integer.parseInt(posCartaJugada)-1,Integer.parseInt(posCartaEnMesa)-1);
 		
 	}
-	public void jugarDoble(String posCartaJugada,String posCartaJugada1, String posCartaEnMesa) {
+	public void jugarDoble(String posCartaJugada,String posCartaJugada1, String posCartaEnMesa) throws NumberFormatException, RemoteException {
 		this.modelo.jugarActual(Integer.parseInt(posCartaJugada)-1,Integer.parseInt(posCartaJugada1)-1,Integer.parseInt(posCartaEnMesa)-1);
 		
 	}
 
-	public void robarCartaJugadorActual() {
+	public void robarCartaJugadorActual() throws RemoteException {
 		this.modelo.robarCartaJugadorActual();
 		
 	}
 
-	public Ijugador obtenerGanador() {
+	public Ijugador obtenerGanador() throws RemoteException {
 		Ijugador ganador=this.modelo.listarJugadores().get(this.modelo.getJugadorActual());
 		return ganador;
 	}
 	
-	public Ijugador obtenerJugadorActual() {
+	public Ijugador obtenerJugadorActual() throws RemoteException {
 		Ijugador ganador=this.modelo.listarJugadores().get(this.modelo.getJugadorActual());
 		return ganador;
 	}
 
-	public void ponerEnMesaCartaJugador(String posCartaTirada) {
+	public void ponerEnMesaCartaJugador(String posCartaTirada) throws NumberFormatException, RemoteException {
 		this.modelo.ponerEnMesaCartaJugadorActual(Integer.parseInt(posCartaTirada)-1);
 		
 	}
 	
-	public int obtenerCantidadCartasJugadorActual() {
+	public int obtenerCantidadCartasJugadorActual() throws RemoteException {
 		return this.modelo.cantidadCartasJugadorActual();
 	}
 
-	public int obtenerCantidadCartasEnMesa() {
+	public int obtenerCantidadCartasEnMesa() throws RemoteException {
 		return this.modelo.cantidadCartasEnMesa();
 	}
 
-	public void reiniciar() {
-		this.modelo.reiniciar();
-		
-	}
+//	public void reiniciar() {
+//		this.modelo.reiniciar();
+//		
+//	}
 
 	@Override
 	public <T extends IObservableRemoto> void setModeloRemoto(T modelo) throws RemoteException {

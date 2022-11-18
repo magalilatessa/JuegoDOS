@@ -31,36 +31,22 @@ public class Juego extends ObservableRemoto implements Ijuego{
 	}
 	
 	@Override
-	public void agregarJugador(String id) {
+	public void agregarJugador(String id) throws RemoteException {
 		//VALIDAR QUE SEA HASTA 6 JUGADORES
 		Jugador jugador=new Jugador(id);
 		jugadores.add(jugador);
 		if (jugadores.size()==6) {
-			try {
-				this.notificar(EstadoJuego.NO_ENTRAN_MAS_JUGADORES);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			this.notificar(EstadoJuego.NO_ENTRAN_MAS_JUGADORES);
 		}else if (jugadores.size()>=2) {
-			try {
-				this.notificar(EstadoJuego.JUGADOR_AGREGADO_PUEDE_EMPEZAR);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			this.notificar(EstadoJuego.JUGADOR_AGREGADO_PUEDE_EMPEZAR);
 			}
-		}
-		try {
-			this.notificar(EstadoJuego.JUGADOR_AGREGADO);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		this.notificar(EstadoJuego.JUGADOR_AGREGADO);
 		
 	}
 	
 	@Override
-	public Jugador JugadorSiguiente() {
+	public Jugador JugadorSiguiente() throws RemoteException{
 		if (this.posJugadorActual==this.jugadores.size()-1) { 
 			this.posJugadorActual= 0;
 			return jugadores.get(posJugadorActual);
@@ -70,22 +56,19 @@ public class Juego extends ObservableRemoto implements Ijuego{
 	}
 	
 	
-	@Override
-	public void agregadorObservador(Iobservador observador) {
-		this.observadores.add(observador);	
-	}
+
 
 	@Override
-	public ArrayList<Jugador> listarJugadores() {
+	public ArrayList<Jugador> listarJugadores() throws RemoteException{
 		return jugadores;
 	}
 	@Override
-	public int getJugadorActual() {
+	public int getJugadorActual() throws RemoteException{
 		return this.posJugadorActual;
 	}
 	
 	@Override
-	public void repartirCartas() { //reparte todas las cartas a los jugadores
+	public void repartirCartas() throws RemoteException { //reparte todas las cartas a los jugadores
 		for (int i=1; i<=7;i++){
 			for (Jugador jugador:jugadores){				
 				Carta carta=this.mazoJuego.sacarCarta(); 
@@ -101,34 +84,29 @@ public class Juego extends ObservableRemoto implements Ijuego{
 		this.cartasEnMesa.add(this.mazoJuego.sacarCarta());
 		this.cartasEnMesa.add(this.mazoJuego.sacarCarta());
 		this.JugadorSiguiente();
-		try {
-			this.notificar(EstadoJuego.CARTAS_REPARTIDAS);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.notificar(EstadoJuego.CARTAS_REPARTIDAS);
 	}
 	
-	private void pasarMazoDescarteAmazoJuego() {
+	private void pasarMazoDescarteAmazoJuego() throws RemoteException{
 		this.mazoJuego.MazoDescarteAjuego(mazoDescarte);
 	}
-	private void agregarCartaEnMesa() {
+	private void agregarCartaEnMesa() throws RemoteException {
 		if (this.mazoJuego.sacarCarta().getColor()==Color.NULL) {
 			this.pasarMazoDescarteAmazoJuego();
 		}
 		this.cartasEnMesa.add(this.mazoJuego.sacarCarta());
 	}
 	@Override
-	public void agregarCartaEnMesa(Carta cartaJugador) {
+	public void agregarCartaEnMesa(Carta cartaJugador) throws RemoteException{
 		this.cartasEnMesa.add(cartaJugador);
 	}
 	@Override
-	public ArrayList<Carta> getCartasEnMesa() {
+	public ArrayList<Carta> getCartasEnMesa() throws RemoteException{
 		return this.cartasEnMesa;
 	}
 
 	@Override
-	public void jugarActual(int posCartaJugada,int posCartaJugada2, int posCartaEnMesa) {
+	public void jugarActual(int posCartaJugada,int posCartaJugada2, int posCartaEnMesa) throws RemoteException {
 		Carta cartaJugador=this.jugadores.get(posJugadorActual).getCartas().get(posCartaJugada);
 		Carta carta2Jugador=this.jugadores.get(posJugadorActual).getCartas().get(posCartaJugada2);
 		Carta cartaMesa=this.cartasEnMesa.get(posCartaEnMesa);
@@ -147,20 +125,10 @@ public class Juego extends ObservableRemoto implements Ijuego{
 
 			//si el jugador no tiene mas cartas se termina el juego
 			if ((this.jugadores.get(posJugadorActual).getCartas().size())==0) {
-				try {
-					this.notificar(EstadoJuego.JUEGO_TERMINADO);
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}}
+				this.notificar(EstadoJuego.JUEGO_TERMINADO);}
 			
 			this.JugadorSiguiente();
-			try {
-				this.notificar(EstadoJuego.JUGAR_SIGUIENTE);
-			} catch (RemoteException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
+			this.notificar(EstadoJuego.JUGAR_SIGUIENTE);
 			break;
 		case IGUAL_NUMERO_COLOR:
 			this.jugadores.get(posJugadorActual).tirarCarta(cartaJugador);
@@ -181,29 +149,14 @@ public class Juego extends ObservableRemoto implements Ijuego{
 			
 			//si el jugador no tiene mas cartas se termina el juego
 			if ((this.jugadores.get(posJugadorActual).getCartas().size())==0) { 
-				try {
-					this.notificar(EstadoJuego.JUEGO_TERMINADO);
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}}
+				this.notificar(EstadoJuego.JUEGO_TERMINADO);}
 			
 
-			try {
-				this.notificar(EstadoJuego.CARTAS_TIRADAS_JUGADOR_PONER_CARTA);
-			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			this.notificar(EstadoJuego.CARTAS_TIRADAS_JUGADOR_PONER_CARTA);
 			break;
 			
 		case DISTINTA:
-			try {
-				this.notificar(EstadoJuego.CARTA_TIRADA_DISTINTA);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			this.notificar(EstadoJuego.CARTA_TIRADA_DISTINTA);
 			break;
 
 		}
@@ -211,7 +164,7 @@ public class Juego extends ObservableRemoto implements Ijuego{
 	
 
 	@Override
-	public void jugarActual(int posCartaJugada, int posCartaEnMesa) {
+	public void jugarActual(int posCartaJugada, int posCartaEnMesa) throws RemoteException {
 		Carta cartaJugador=this.jugadores.get(posJugadorActual).getCartas().get(posCartaJugada);
 		Carta cartaMesa=this.cartasEnMesa.get(posCartaEnMesa);
 		CompararCarta comparacion=cartaMesa.comparar(cartaJugador);
@@ -226,20 +179,10 @@ public class Juego extends ObservableRemoto implements Ijuego{
 			this.agregarCartaEnMesa();
 			//si el jugador no tiene mas cartas se termina el juego
 			if ((this.jugadores.get(posJugadorActual).getCartas().size())==0) {
-				try {
-					this.notificar(EstadoJuego.JUEGO_TERMINADO);
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}}
+				this.notificar(EstadoJuego.JUEGO_TERMINADO);}
 			
 			this.JugadorSiguiente();
-			try {
-				this.notificar(EstadoJuego.JUGAR_SIGUIENTE);
-			} catch (RemoteException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
+			this.notificar(EstadoJuego.JUGAR_SIGUIENTE);
 			break;
 		case IGUAL_NUMERO_COLOR:
 			this.jugadores.get(posJugadorActual).tirarCarta(cartaJugador);
@@ -251,47 +194,27 @@ public class Juego extends ObservableRemoto implements Ijuego{
 			
 			//si el jugador no tiene mas cartas se termina el juego
 			if ((this.jugadores.get(posJugadorActual).getCartas().size())==0) { 
-				try {
-					this.notificar(EstadoJuego.JUEGO_TERMINADO);
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}}
-			
-			try {
-				this.notificar(EstadoJuego.CARTAS_TIRADAS_JUGADOR_PONER_CARTA);
-			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+				this.notificar(EstadoJuego.JUEGO_TERMINADO);
+				}
+			this.notificar(EstadoJuego.CARTAS_TIRADAS_JUGADOR_PONER_CARTA);
 			break;
 		case DISTINTA:
-			try {
-				this.notificar(EstadoJuego.CARTA_TIRADA_DISTINTA);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			this.notificar(EstadoJuego.CARTA_TIRADA_DISTINTA);
 			break;
 
 		}	
 	}
 
 	@Override
-	public void robarCartaJugadorActual() {
+	public void robarCartaJugadorActual() throws RemoteException {
 		this.jugadores.get(posJugadorActual).agregarCarta(this.mazoJuego.sacarCarta());
 		this.JugadorSiguiente();
-		try {
-			this.notificar(EstadoJuego.JUGAR_SIGUIENTE);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.notificar(EstadoJuego.JUGAR_SIGUIENTE);
 		
 	}
 
 	@Override
-	public void ponerEnMesaCartaJugadorActual(int posCartaTirada) {
+	public void ponerEnMesaCartaJugadorActual(int posCartaTirada) throws RemoteException{
 		Carta cartaJugador=this.jugadores.get(posJugadorActual).getCartas().get(posCartaTirada);
 		this.jugadores.get(posJugadorActual).tirarCarta(cartaJugador);
 		this.cartasEnMesa.add(cartaJugador);
@@ -299,28 +222,28 @@ public class Juego extends ObservableRemoto implements Ijuego{
 	}
 
 	@Override
-	public int cantidadCartasJugadorActual() {
+	public int cantidadCartasJugadorActual() throws RemoteException{
 		return this.jugadores.get(posJugadorActual).cantidadDeCartas();
 		
 	}
 
 	@Override
-	public int cantidadCartasEnMesa() {
+	public int cantidadCartasEnMesa() throws RemoteException{
 		return this.cartasEnMesa.size();
 	}
 	
 	
 	//###############REINICIAR##############
-	@Override
-	public void reiniciar() {
-		this.observadores = new ArrayList<>();
-		this.cartasEnMesa=new ArrayList<>();
-		this.jugadores = new ArrayList<>();
-		this.posJugadorActual=0;
-		this.mazoJuego=new Mazo();
-		mazoJuego.cargarCartas(); //solo una vez      
-		mazoDescarte=new Mazo();
-	}
+//	@Override
+//	public void reiniciar() {
+//		this.observadores = new ArrayList<>();
+//		this.cartasEnMesa=new ArrayList<>();
+//		this.jugadores = new ArrayList<>();
+//		this.posJugadorActual=0;
+//		this.mazoJuego=new Mazo();
+//		mazoJuego.cargarCartas(); //solo una vez      
+//		mazoDescarte=new Mazo();
+//	}
 
 
 

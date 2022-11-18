@@ -1,5 +1,6 @@
 package Vista;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -41,7 +42,7 @@ public class VistaConsola implements Ivista{
 	}
 	
 	@Override
-	public void iniciar() {
+	public void iniciar() throws RemoteException {
 		boolean salir = false;
 		this.mostrarEncabezado();
 		while(!salir ) {
@@ -82,7 +83,7 @@ public class VistaConsola implements Ivista{
 		System.out.println("99 - Salir");
 		
 	}
-	public void menuNoEntranMasJugadores() {
+	public void menuNoEntranMasJugadores() throws RemoteException {
 		boolean salir=true;
 		do {
 			this.mostrarMenuEmpezar();
@@ -123,7 +124,7 @@ public class VistaConsola implements Ivista{
 		System.out.println("99 - Salir");
 		
 	}
-	public void empezar() {
+	public void empezar() throws RemoteException {
 		boolean salir=true;
 		do {
 			this.mostrarMenuEmpezar();
@@ -163,7 +164,7 @@ public class VistaConsola implements Ivista{
 		System.out.println("99 - Robar carta");
 	}
 	
-	public void iniciarJuegoActual() {
+	public void iniciarJuegoActual() throws NumberFormatException, RemoteException {
 		this.mostrarMenuIniciar();
 		String opcion = this.entrada.nextLine();
 		int cantidadCartasJugadorActual=this.controlador.obtenerCantidadCartasJugadorActual();
@@ -258,13 +259,13 @@ public class VistaConsola implements Ivista{
 //		this.controlador.agregarJugador("Magali");
 //	}
 
-	public void cartaDistinta() {
+	public void cartaDistinta() throws NumberFormatException, RemoteException {
 		System.out.println("Las cartas son de distinto número");
 		this.iniciarJuegoActual();
 		
 	}
 
-	public void ElegirCartaJugadorActual() {
+	public void ElegirCartaJugadorActual() throws NumberFormatException, RemoteException {
 		System.out.println("Debe elegir una carta para poner en la mesa");
 		this.mostrarCartasDespuesDeJugar(this.controlador.obtenerJugadorActual());
 		System.out.println("Ingrese la posicion de la carta");
@@ -311,7 +312,7 @@ public class VistaConsola implements Ivista{
 	}
 	
 	
-	public void mostrarMenuTerminar() {
+	public void mostrarMenuTerminar() throws RemoteException {
 		System.out.println("#####################################");
 		System.out.println("####### EL JUEGO HA TERMINADO #######");
 		System.out.println("#####################################");
@@ -324,14 +325,14 @@ public class VistaConsola implements Ivista{
 		System.out.println("2 - Salir");
 		System.out.println();
 	}
-	public void terminar() {
+	public void terminar() throws RemoteException {
 		boolean salir = false;
 		while(!salir ) {
 			this.mostrarMenuTerminar();
 			String opcion = this.entrada.nextLine();
 			switch (opcion) {
 				case "1":
-					this.controlador.reiniciar();
+					//this.controlador.reiniciar();
 					break;
 				case "2":
 					System.exit(0);

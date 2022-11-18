@@ -9,37 +9,35 @@ import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
 public interface Ijuego extends IObservableRemoto{
 
-	void agregarJugador(String id);
+	void agregarJugador(String id) throws RemoteException;
 
-	Jugador JugadorSiguiente();
+	Jugador JugadorSiguiente() throws RemoteException;
 
 
-	void agregadorObservador(Iobservador observador);
+	ArrayList<Jugador> listarJugadores()throws RemoteException;
 
-	ArrayList<Jugador> listarJugadores();
+	int getJugadorActual()throws RemoteException;
 
-	int getJugadorActual();
+	void repartirCartas() throws RemoteException;
 
-	void repartirCartas();
+	void agregarCartaEnMesa(Carta cartaJugador)throws RemoteException;
 
-	void agregarCartaEnMesa(Carta cartaJugador);
+	ArrayList<Carta> getCartasEnMesa()throws RemoteException;
 
-	ArrayList<Carta> getCartasEnMesa();
+	void jugarActual(int posCartaJugada, int posCartaJugada2, int posCartaEnMesa) throws RemoteException;
 
-	void jugarActual(int posCartaJugada, int posCartaJugada2, int posCartaEnMesa);
+	void jugarActual(int posCartaJugada, int posCartaEnMesa) throws RemoteException;
 
-	void jugarActual(int posCartaJugada, int posCartaEnMesa);
+	void robarCartaJugadorActual() throws RemoteException;
 
-	void robarCartaJugadorActual();
+	void ponerEnMesaCartaJugadorActual(int posCartaTirada)throws RemoteException;
 
-	void ponerEnMesaCartaJugadorActual(int posCartaTirada);
+	int cantidadCartasJugadorActual()throws RemoteException;
 
-	int cantidadCartasJugadorActual();
-
-	int cantidadCartasEnMesa();
+	int cantidadCartasEnMesa()throws RemoteException;
 
 	//###############REINICIAR##############
-	void reiniciar();
+	//void reiniciar();
 
 	void notificar(Object evento) throws RemoteException;
 
