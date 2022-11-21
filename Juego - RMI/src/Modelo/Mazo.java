@@ -27,6 +27,16 @@ public class Mazo implements Serializable{
 				}}
 			}
 		}
+		for(Color color: Color.values()){
+  				if (color!=Color.MULTICOLOR && color!=Color.NULL){//para todos los colores menos multicolor
+					for (int x=1;x<=2;x++) {
+						carta=new Carta(("#"),color);
+						cartas.add(carta);//agregar dos de esa carta
+						}
+				
+			}
+		}
+		
 		for (int x=1;x<=12;x++) {//agregar 12 2 multicolor
 			carta=new Carta("2",Color.MULTICOLOR);
 			cartas.add(carta);

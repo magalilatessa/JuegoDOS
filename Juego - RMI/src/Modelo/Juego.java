@@ -75,17 +75,28 @@ public class Juego extends ObservableRemoto implements Ijuego{
 				jugador.agregarCarta(carta);
 			}
 		}
-		//###################cast 1 carta x jugador###################
-//		for (Jugador jugador:jugadores){
-//			Carta carta=this.mazoJuego.sacarCarta(); 
-//			jugador.agregarCarta(carta);
-//   	}
 		//y pone dos en mesa
 		this.cartasEnMesa.add(this.mazoJuego.sacarCarta());
 		this.cartasEnMesa.add(this.mazoJuego.sacarCarta());
 		this.JugadorSiguiente();
 		this.notificar(EstadoJuego.CARTAS_REPARTIDAS);
 	}
+	
+	public void repartirCartasTerminar() throws RemoteException { //reparte todas las cartas a los jugadores
+		//###################cast 1 carta x jugador###################
+		Carta carta=null;
+		for (Jugador jugador:jugadores){
+			carta=this.mazoJuego.sacarCarta(); 
+			if (this.cantidadCartasEnMesa()<2) {
+				this.cartasEnMesa.add(carta);
+			}
+			jugador.agregarCarta(carta);
+   	}
+		
+		this.JugadorSiguiente();
+		this.notificar(EstadoJuego.CARTAS_REPARTIDAS);
+	}
+	
 	
 	private void pasarMazoDescarteAmazoJuego() throws RemoteException{
 		this.mazoJuego.MazoDescarteAjuego(mazoDescarte);
@@ -140,7 +151,7 @@ public class Juego extends ObservableRemoto implements Ijuego{
 			this.cartasEnMesa.remove(posCartaEnMesa); //la saco de la lista
 			
 			//A todos los jugades les sumo 1 carta
-			for (int i=0;i<=this.jugadores.size();i++) {
+			for (int i=0;i<this.jugadores.size();i++) {
 				if (!jugadores.get(i).getId().equals(jugadores.get(this.posJugadorActual).getId())) {
 					Carta carta=this.mazoJuego.sacarCarta();
 					jugadores.get(i).agregarCarta(carta);
@@ -217,7 +228,9 @@ public class Juego extends ObservableRemoto implements Ijuego{
 	public void ponerEnMesaCartaJugadorActual(int posCartaTirada) throws RemoteException{
 		Carta cartaJugador=this.jugadores.get(posJugadorActual).getCartas().get(posCartaTirada);
 		this.jugadores.get(posJugadorActual).tirarCarta(cartaJugador);
+		this.agregarCartaEnMesa();
 		this.cartasEnMesa.add(cartaJugador);
+		
 		this.JugadorSiguiente();
 	}
 
@@ -234,16 +247,17 @@ public class Juego extends ObservableRemoto implements Ijuego{
 	
 	
 	//###############REINICIAR##############
-//	@Override
-//	public void reiniciar() {
-//		this.observadores = new ArrayList<>();
-//		this.cartasEnMesa=new ArrayList<>();
-//		this.jugadores = new ArrayList<>();
-//		this.posJugadorActual=0;
-//		this.mazoJuego=new Mazo();
-//		mazoJuego.cargarCartas(); //solo una vez      
-//		mazoDescarte=new Mazo();
-//	}
+	@Override
+	public void reiniciar() throws RemoteException {
+		this.observadores = new ArrayList<>();
+		this.cartasEnMesa=new ArrayList<>();
+		this.jugadores = new ArrayList<>();
+		this.posJugadorActual=0;
+		this.mazoJuego=new Mazo();
+		mazoJuego.cargarCartas(); //solo una vez      
+		mazoDescarte=new Mazo();
+		this.notificar(EstadoJuego.NUEVO_JUEGO);
+	}
 
 
 

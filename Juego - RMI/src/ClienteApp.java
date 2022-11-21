@@ -7,13 +7,13 @@ import ar.edu.unlu.rmimvc.cliente.Cliente;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 
 
-
 public class ClienteApp {
 
 	public static void main(String[] args) {
+		Integer puerto = Integer.valueOf(args[0]);
 		VistaConsola vista = new VistaConsola();
 		IControladorRemoto controlador = new Controlador(vista);
-		Cliente cliente = new Cliente("127.0.0.1", 64008, "127.0.0.1", 64005);
+		Cliente cliente = new Cliente("127.0.0.1", puerto, "127.0.0.1", 60003);
 		try {
 			cliente.iniciar(controlador);
 			vista.iniciar();

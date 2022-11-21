@@ -19,6 +19,8 @@ public interface Ijuego extends IObservableRemoto{
 	int getJugadorActual()throws RemoteException;
 
 	void repartirCartas() throws RemoteException;
+	
+	void repartirCartasTerminar() throws RemoteException; 
 
 	void agregarCartaEnMesa(Carta cartaJugador)throws RemoteException;
 
@@ -40,5 +42,7 @@ public interface Ijuego extends IObservableRemoto{
 	//void reiniciar();
 
 	void notificar(Object evento) throws RemoteException;
+
+	void reiniciar() throws RemoteException;
 
 }

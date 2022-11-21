@@ -9,7 +9,7 @@ public class ServidorApp {
 
 	public static void main(String[] args) {
 			Ijuego modelo = new Juego();
-			Servidor servidor = new Servidor("127.0.0.1", 64005);
+			Servidor servidor = new Servidor("127.0.0.1", 60003);
 			System.out.println("Iniciando servidor...");
 			try {
 				servidor.iniciar(modelo);

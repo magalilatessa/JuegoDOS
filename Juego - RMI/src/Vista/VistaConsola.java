@@ -43,6 +43,7 @@ public class VistaConsola implements Ivista{
 	
 	@Override
 	public void iniciar() throws RemoteException {
+		this.ponerEspacios();
 		boolean salir = false;
 		this.mostrarEncabezado();
 		while(!salir ) {
@@ -84,6 +85,7 @@ public class VistaConsola implements Ivista{
 		
 	}
 	public void menuNoEntranMasJugadores() throws RemoteException {
+		this.ponerEspacios();
 		boolean salir=true;
 		do {
 			this.mostrarMenuEmpezar();
@@ -125,6 +127,7 @@ public class VistaConsola implements Ivista{
 		
 	}
 	public void empezar() throws RemoteException {
+		this.ponerEspacios();
 		boolean salir=true;
 		do {
 			this.mostrarMenuEmpezar();
@@ -169,6 +172,7 @@ public class VistaConsola implements Ivista{
 		String opcion = this.entrada.nextLine();
 		int cantidadCartasJugadorActual=this.controlador.obtenerCantidadCartasJugadorActual();
 		int cantidadCartasEnMesa=this.controlador.obtenerCantidadCartasEnMesa();
+
 		switch (opcion) {
 			case "1":
 				System.out.println("Ingrese la posicion de la carta que quiere jugar");
@@ -202,22 +206,33 @@ public class VistaConsola implements Ivista{
 				break;
 			default:
 				System.out.println("Opcion no valida.");
+				iniciarJuegoActual();
 		}
 }
 	
 	
 
 	public void mostrarJugadores(List<Ijugador> jugadores) {
-		System.out.println("Los jugadores actuales son: ");
-		for (Ijugador jugador:jugadores) {
-			System.out.println(jugador.getId());
+		this.ponerEspacios();
+		if (jugadores.size()!=0) {
+			System.out.println("Los jugadores actuales son: ");
+			for (Ijugador jugador:jugadores) {
+				System.out.println(jugador.getId());
+			}
+		}else {
+			System.out.println("Aún no hay jugadores agregados");
 		}
+		
 	}
 
 	public void mostrarCartaJugadorActual(Ijugador jugadorActual) {
-		System.out.println();
+		System.out.println("#############################################");
 		System.out.println("Es el turno de: "+ jugadorActual.getId());
-		System.out.println("Sus cartas son: ");
+		System.out.println("##########"+jugadorActual.getId()+"##########");
+		System.out.println("Apriete 'enter' para continuar");
+		this.entrada.nextLine();
+		System.out.println("##########"+jugadorActual.getId()+"##########");
+		System.out.println("Tus cartas son: ");
 		int i=0;
 		for (Carta carta: jugadorActual.getCartas()) {
 			i++;
@@ -227,6 +242,7 @@ public class VistaConsola implements Ivista{
 	}
 
 	public void mostrarCartasEnMesa(ArrayList<Carta> cartasEnMesa) {
+		this.ponerEspacios();
 		System.out.println("Las cartas en mesa son:");
 		int i =0;
 		for (Carta carta: cartasEnMesa) {
@@ -236,7 +252,28 @@ public class VistaConsola implements Ivista{
 		
 	}
 
-	
+	public void ponerEspacios() {
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+	}
 
 
 	public void mostrarCartasDespuesDeJugar(Ijugador jugadorActual) {
@@ -280,17 +317,16 @@ public class VistaConsola implements Ivista{
 		System.out.println("##JUEGO DOS##");
 		System.out.println();
 		System.out.println("Se admiten de 2 a 6 jugadores");
-		System.out.println("OBJETIVO: se el primero en quedarse sin cartas");
+		System.out.println("OBJETIVO: sé el primero en quedarse sin cartas");
 		System.out.println();
 		System.out.println("Cada jugador, en su turno intentará hacer juego con una o dos cartas de la mesa ");
 		System.out.println("utilizando las cartas que tiene en la mano, si no puede debera robar una del mazo");					
 		System.out.println();
-		System.out.println("Formas de hacer juego con las cartas de la mesa");
+		System.out.println("Formas de hacer juego con las cartas de la mesa:");
 		System.out.println("####JUEGO SIMPLE####");
 		System.out.println("Tirar una carta del MISMO NUMERO que alguna de la mesa");
-		System.out.println("*Si la carta coincide tanbien el color, "
+		System.out.println("*Si la carta coincide tambien el color, "
 				+ "debera agregar una de sus cartas a la mesa");
-		System.out.println();
 		System.out.println("####JUEGO DOBLE####");
 		System.out.println("Tirar dos cartas cuyos números sumen el de una de las cartas de la mesa");
 		System.out.println("Si las dos cartas utilizadas coinciden con el color de la carta de la mesa");
@@ -332,7 +368,7 @@ public class VistaConsola implements Ivista{
 			String opcion = this.entrada.nextLine();
 			switch (opcion) {
 				case "1":
-					//this.controlador.reiniciar();
+					this.controlador.reiniciar();
 					break;
 				case "2":
 					System.exit(0);

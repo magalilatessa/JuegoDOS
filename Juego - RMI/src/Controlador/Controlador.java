@@ -30,6 +30,9 @@ public class Controlador implements IControladorRemoto{
 	public void actualizar(IObservableRemoto observable, Object estado) throws RemoteException {
 		if (estado instanceof EstadoJuego) {
 			switch((EstadoJuego) estado) {
+			case NUEVO_JUEGO:
+				this.vista.iniciar();
+				break;
 			case JUGADOR_AGREGADO:
 				this.verJugadores();
 				break;
@@ -106,8 +109,10 @@ public class Controlador implements IControladorRemoto{
 	public void agregarJugador(String id) throws RemoteException {
 		this.modelo.agregarJugador(id);
 	}
+	//#########################################################################
 	public void iniciarJuego() throws RemoteException {
 		this.modelo.repartirCartas();
+		//this.modelo.repartirCartasTerminar();
 	}
 
 	public void jugarSimple(String posCartaJugada, String posCartaEnMesa) throws NumberFormatException, RemoteException {
@@ -115,7 +120,8 @@ public class Controlador implements IControladorRemoto{
 		
 	}
 	public void jugarDoble(String posCartaJugada,String posCartaJugada1, String posCartaEnMesa) throws NumberFormatException, RemoteException {
-		this.modelo.jugarActual(Integer.parseInt(posCartaJugada)-1,Integer.parseInt(posCartaJugada1)-1,Integer.parseInt(posCartaEnMesa)-1);
+		this.modelo.jugarActual(Integer.parseInt(posCartaJugada)-1,
+				Integer.parseInt(posCartaJugada1)-1,Integer.parseInt(posCartaEnMesa)-1);
 		
 	}
 
@@ -147,10 +153,10 @@ public class Controlador implements IControladorRemoto{
 		return this.modelo.cantidadCartasEnMesa();
 	}
 
-//	public void reiniciar() {
-//		this.modelo.reiniciar();
-//		
-//	}
+	public void reiniciar() throws RemoteException {
+		this.modelo.reiniciar();
+		
+	}
 
 	@Override
 	public <T extends IObservableRemoto> void setModeloRemoto(T modelo) throws RemoteException {
